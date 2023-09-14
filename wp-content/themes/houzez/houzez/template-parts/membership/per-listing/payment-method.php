@@ -36,7 +36,11 @@ if($enable_paypal != 0 ) {
 } else {
 
 }
-
+global $submission_price;
+$balance = mycred_get_users_cred( get_current_user_id() );
+if ($submission_price > $balance) {
+    die("<strong>Your points are not enough! please recharge your account</strong>");
+}
 ?>
 <div class="payment-method">
     
