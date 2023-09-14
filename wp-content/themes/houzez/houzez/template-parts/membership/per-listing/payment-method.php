@@ -37,9 +37,6 @@ if($enable_paypal != 0 ) {
 
 }
 
-
-global $submission_price;
-$price_listing_submission = $submission_price;
 ?>
 <div class="payment-method">
     
@@ -93,4 +90,3 @@ $price_listing_submission = $submission_price;
     <?php esc_html_e( 'Complete Payment', 'houzez' ); ?>
 </button>
 <div class="mb-4"><?php echo sprintf(wp_kses(__('By clicking "Complete Payment" you agree to our <a target="_blank"  href="%s">Terms & Conditions</a>', 'houzez'), $allowed_html_array), get_permalink($terms_conditions)); ?></div>
-

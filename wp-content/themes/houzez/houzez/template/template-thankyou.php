@@ -264,14 +264,20 @@ get_header(); ?>
                     if( isset( $_GET['directy_pay'] ) && $_GET['directy_pay'] != '' ) {
                         $orderID = $_GET['directy_pay'];
                         $invoice_meta = houzez_get_invoice_meta( $orderID );
+
                         $submission_price = get_user_meta( $userID, "submission_price", 1 );
                         $invoice_meta['invoice_item_price'] = $submission_price;
+                        update_post_meta( $orderID, 'HOUZEZ_invoice_price', $submission_price );
+                        update_post_meta( $orderID, '_houzez_invoice_meta', $invoice_meta );
+                        mycred_subtract( $orderID, $userID, -$submission_price, 'Payment!' );
+
+                        $invoice_meta = houzez_get_invoice_meta( $orderID );
                         ?>
                         <p><strong><?php echo houzez_option('thankyou_wire_title'); ?></strong></p>
                         <ul style="text-align: left;">
                             <li><?php echo $houzez_local['order_number'].':'; ?> <strong><?php echo esc_attr($orderID); ?></strong> </li>
                             <li><?php echo $houzez_local['date'].':'; ?> <strong><?php echo get_the_date('', $orderID); ?></strong> </li>
-                            <li><?php echo $houzez_local['total'].':'; ?> <strong><?php echo houzez_get_invoice_price( $invoice_meta['invoice_item_price'] );?></strong> </li>
+                            <li><?php echo $houzez_local['total'].':'; ?> <strong><?php echo $invoice_meta['invoice_item_price'];?></strong> </li>
                             <li><?php echo $houzez_local['payment_method'].':'; ?>
                                 <strong>
                                     <?php if( $invoice_meta['invoice_payment_method'] == 'Direct Bank Transfer' ) {
