@@ -22,7 +22,7 @@ if( !function_exists('houzez_listing_expire')) {
                 $per_listing_expire_unlimited = houzez_option('per_listing_expire_unlimited');
                 if( $per_listing_expire_unlimited != 0 ) {
                     //$per_listing_expire = houzez_option('per_listing_expire');
-                    $per_listing_expire = 60;
+                    $per_listing_expire = houzez_option('per_listing_expire_normal');
 
                     $publish_date = $post->post_date;
                     echo date_i18n( get_option('date_format').' '.get_option('time_format'), strtotime( $publish_date. ' + '.$per_listing_expire.' days' ) );
@@ -61,7 +61,7 @@ if( !function_exists('houzez_featured_listing_expire')) {
         if( ( $submission_type == 'free_paid_listing' || $submission_type == 'no' ) && ( $prop_featured_date != '' ) ) {
             
             //$featured_listing_expire = intval ( fave_option('featured_listing_expire', 30) );
-            $featured_listing_expire = 45;
+            $featured_listing_expire = intval ( houzez_option('per_listing_expire_featured') );
 
             echo '<br>'.esc_html__('Featured Expiration:', 'houzez'); echo ' '.date_i18n( get_option('date_format').' '.get_option('time_format'), strtotime( $prop_featured_date. ' + '.$featured_listing_expire.' days' ) );
             
