@@ -324,6 +324,24 @@ class Houzez {
 
         add_action( 'admin_enqueue_scripts', array( __CLASS__ , 'enqueue_scripts' ) );
 
+        add_action( 'mycred_update_user_balance', function($user_id, $current_balance, $amount, $type){
+            $current_user = get_userdata( $user_id );
+            if($current_user->roles[0] == 'houzez_agent') {
+                $plans = [
+                    [1000,100],
+                    [3000,400],
+                    [5000,600],
+                    [10000,1600],
+                    [20000,3500]
+                ];
+                foreach ($plans as $plan) {
+                    if($amount == $plan[0]) {
+                        mycred_add( 'free_points', $user_id, $plan[1], 'Free points' );
+                    }
+                }
+            }
+        },10,4 );
+
     }
 
 
