@@ -60,6 +60,9 @@ if(!function_exists('houzez_mycred_buy_per_gateway')){
 }
 if(!function_exists('houzez_buy_credpoints')) {
   function houzez_buy_credpoints($atts) {
+    if(array_key_exists('gateway',$_GET) && array_key_exists('points',$_GET)) {
+      houzez_mycred_buy_per_gateway($_GET['gateway'],$_GET['points']);
+    } else {
     ?>
     <label>Payment Gateway</label>
     <select class="form-control" id="select-gateway" selected="<?php echo $_GET['gateway']; ?>">
@@ -74,10 +77,6 @@ if(!function_exists('houzez_buy_credpoints')) {
       }
     </script>
     <?php
-    if(array_key_exists('gateway',$_GET) && array_key_exists('points',$_GET)) {
-      houzez_mycred_buy_per_gateway($_GET['gateway'],$_GET['points']);
-    } else {
-      houzez_mycred_buy_per_gateway('bank',"100");
     }
   }
   add_shortcode( 'houzez-buy-credpoints', 'houzez_buy_credpoints');
