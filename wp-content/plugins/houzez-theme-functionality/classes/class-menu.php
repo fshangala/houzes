@@ -11,6 +11,7 @@ class Chats_List_Table extends WP_List_Table {
         $columns = array(
             'name'=>'Name',
             'last_active_timestamp'=>'Last Active',
+            'chat_box_id' => 'Property',
             'message_count'=>'Messages'
         );
         return $columns;
@@ -41,7 +42,7 @@ class Chats_List_Table extends WP_List_Table {
     function column_default($item,$column_name) {
         return $item[$column_name];
     }
-    function column_name($item) {
+    function column_message_count($item) {
         $query_args = array(
             'page'=>$_REQUEST['page'],
             'view_session'=>$item['id']
@@ -56,7 +57,13 @@ class Chats_List_Table extends WP_List_Table {
         $actions = array(
             'view' => '<a href="'.$view_session_link.'">View Messages</a>'
         );
-        return sprintf('%1$s %2$s',$item['name'],$this->row_actions($actions));
+        return sprintf('%1$s %2$s',$item['message_count'],$this->row_actions($actions));
+    }
+    function column_chat_box_id($item) {
+        $property = get_post( $item['chat_box_id']);
+        return sprintf('%1$s %2$s',$property->post_title,$this->row_actions(array(
+            'view'=>'<a href="'.$property->guid.'" target="_blank">View Property</a>'
+        )));
     }
 }
 
@@ -117,6 +124,7 @@ class Houzez_Menu {
     public function setup_menu() {
 
         add_menu_page( 'Chats', 'Chats', 'manage_options', 'chats', function(){
+
             echo '<h2>Chat Sessions</h2>';
             $chatList = new Chats_List_Table();
             $chatList->prepare_items();
